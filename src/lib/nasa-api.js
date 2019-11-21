@@ -1,4 +1,4 @@
-
+import { generateRandomDate } from './helpers';
 /**
  * Sækir Myndir frá nasa API. Til þess að sjá dæmi um json svari sjá apod.json
  */
@@ -15,5 +15,18 @@ const URL = 'https://api.nasa.gov/planetary/apod';
  * @returns {Promise} sem mun innihalda upplýsingar um mynd/myndband hjá nasa.
  */
 export default async function getRandomImage() {
+    const date = RandomDate();
+    const requestURL = `${URL}?api_key=${API_KEY}&date=${date}`;
+    const res = await fetch(requestURL);
 
+    const {
+        meda_type: type,
+        url: mediaUrl,
+        explanation: text,
+        title,
+    } = await res.json();
+
+    return {
+        type, mediaUrl, text, title,
+    };
 }

@@ -38,3 +38,24 @@ export function el(name, ...children) {
 export function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+/**
+ * Fær inn tölu og skilar síðan streng sem er paddaður
+ */
+const ToZeroPadded = (number) => (number > 9 ? String(number) : `0${number}`);
+
+/**
+ * Skilar handahófskenndri dagsetningu
+ */
+export function generateRandomDate() {
+  // return '2019-10-21';
+
+  const min = 803260800000; // 16. júlí 1995
+  const max = Date.now();
+  const timestamp = randomNumber(min, max);
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = ToZeroPadded(date.getMonth() + 1);
+  const day = ToZeroPadded(date.getDate());
+  return `${year}-${month}-${day}`;
+}

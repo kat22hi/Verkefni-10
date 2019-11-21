@@ -1,3 +1,6 @@
+import getRandomImage from './nasa-api';
+import { save, load } from './storage';
+import { el } from './helpers';
 // todo vísa í rétta hluti með import
 
 // breytur til þess að halda utan um html element nodes
@@ -12,14 +15,27 @@ let image; // object sem inniheldur núverandi mynd á forsíðu.
  * ásamt titli og texta.
  */
 function getNewImage() {
+    image = await getRandomImage();
 
+    if(image.type === 'video') {
+        img.style.display = 'none';
+        video.setAttribute('src', image.medaURL);
+        video.style.display = 'block';
+    }
+    else {
+        vide.style.display = 'none';
+        img.setAttribute('src', image.medaURL);
+        img.style.display = '';
+    }
+    text.innerText = image.text;
+    title.innerText = image.title;
 }
 
 /*
  * Vistar núverandi mynd í storage.
  */
 function saveCurrentImage() {
-
+    save(image.type, image.mediaUrl, image.text, image.title);
 }
 
 /*
@@ -27,7 +43,13 @@ function saveCurrentImage() {
  *
  */
 export default function init(apod) {
-
+    img = document.querySelector('.apod__image');
+    title = document.querySelector('.apod__title');
+    text = document.querySelector('.apod__text');
+    video = document.querySelector('.apod__video');
+    document.querySelector('#new-image-button').addEventListener('click', getNewImage);
+    document.querySelector('#save-image-button').addEventListener('click', saveCurrentImage);
+    getNewImage();
 }
 
 /*
@@ -35,5 +57,34 @@ export default function init(apod) {
  * titlum þeirra.
  */
 export function loadFavourites() {
+    const main = document.querySelector('main');
+    const images = load();
+    images.forEach((favimg) => {
+        const titleEl = el('h1');
+        titleEl.innerText = favimg.title;
 
+        if (favimg.type === 'video') {
+        const vid = el('iframe');
+        vid.setAttribute('src', favimg.mediaUrl);
+        vid.setAttribute('type', 'text/HTML');
+        vid.setAttribute('width', '640');
+        vid.setAttribute('height', '360');
+        vid.setAttribute('frameborder', '0');
+        vid.classList.add('apod__video');
+
+        const item = el('div', titleEl, vid);
+        item.classList.add('apod');
+
+        main.appendChild(item);
+        } else {
+        const imgEl = el('img');
+        imgEl.setAttribute('src', favimg.mediaUrl);
+        imgEl.classList.add('apod__image');
+
+        const item = el('div', titleEl, imgEl);
+        item.classList.add('apod');
+
+        main.appendChild(item);
+        }
+    });
 }
