@@ -7,6 +7,7 @@ import { el } from './helpers';
 let title; // titill fyrir mynd á forsíðu
 let text; // texti fyrir mynd á forsíðu
 let img; // mynd á forsíðu
+let video;
 
 let image; // object sem inniheldur núverandi mynd á forsíðu.
 
@@ -14,17 +15,17 @@ let image; // object sem inniheldur núverandi mynd á forsíðu.
  * Sækir nýja Mynd af handahófi frá Nasa API og birtir hana á forsíðunni
  * ásamt titli og texta.
  */
-function getNewImage() {
+async function getNewImage() {
     image = await getRandomImage();
 
     if(image.type === 'video') {
         img.style.display = 'none';
-        video.setAttribute('src', image.medaURL);
+        video.setAttribute('src', image.medaUrl);
         video.style.display = 'block';
     }
     else {
-        vide.style.display = 'none';
-        img.setAttribute('src', image.medaURL);
+        video.style.display = 'none';
+        img.setAttribute('src', image.medaUrl);
         img.style.display = '';
     }
     text.innerText = image.text;
@@ -42,13 +43,15 @@ function saveCurrentImage() {
  * Upphafsstillir forsíðuna. Setur event listeners á takkana, og sækir eina mynd.
  *
  */
-export default function init(apod) {
+export default function init() {
     img = document.querySelector('.apod__image');
     title = document.querySelector('.apod__title');
     text = document.querySelector('.apod__text');
     video = document.querySelector('.apod__video');
     document.querySelector('#new-image-button').addEventListener('click', getNewImage);
     document.querySelector('#save-image-button').addEventListener('click', saveCurrentImage);
+    document.querySelector('#save-image-button').addEventListener('click', saveCurrentImage);
+
     getNewImage();
 }
 
@@ -71,20 +74,20 @@ export function loadFavourites() {
         vid.setAttribute('height', '360');
         vid.setAttribute('frameborder', '0');
         vid.classList.add('apod__video');
-
         const item = el('div', titleEl, vid);
         item.classList.add('apod');
 
         main.appendChild(item);
-        } else {
-        const imgEl = el('img');
-        imgEl.setAttribute('src', favimg.mediaUrl);
-        imgEl.classList.add('apod__image');
+    } 
+    else {
+            const imgEl = el('img');
+            imgEl.setAttribute('src', favimg.mediaUrl);
+            imgEl.classList.add('apod__image');
 
-        const item = el('div', titleEl, imgEl);
-        item.classList.add('apod');
+            const item = el('div', titleEl, imgEl);
+            item.classList.add('apod');
 
-        main.appendChild(item);
-        }
-    });
+            main.appendChild(item);
+    }
+  });
 }

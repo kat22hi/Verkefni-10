@@ -28,14 +28,16 @@ export function load() {
  * @param {string} title titill fyrir myndina/myndbandið.
  */
 export function save(type, mediaUrl, text, title) {
-    let favorites = load();
-    if (!favorites) favorites = [];
+  let favorites = load();
+  if (!favorites) favorites = [];
 
-    if(favorites.filter((img) => img.mediaUrl === mediaUrl).length === 0) {
-      favorites.push({
-        type, mediaUrl, text, title,
-      });
-    }
+  if (favorites.filter((img) => img.mediaUrl === mediaUrl).length === 0) {
+    favorites.push({
+      type, mediaUrl, text, title,
+    });
+    const json = JSON.stringify(favorites);
+    localStorage.setItem(LOCALSTORAGE_KEY, json);
+  }
 }
 
 

@@ -4,10 +4,9 @@ import { generateRandomDate } from './helpers';
  */
 
 // API lykill til að fá aðgang að nasa gögnum.
-const API_KEY = 'DEMO_KEY';
+const API_KEY = 'WuxzCm4wCoVwLgcn7jsV69f1NjdjOx57HRbyvxcI';
 // Slóð að sækja myndir frá. Dæmi um heila slóð https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2019-11-10
 const URL = 'https://api.nasa.gov/planetary/apod';
-
 
 /**
  * Sækir mynd af handahófi frá APOD API hjá nasa
@@ -15,7 +14,7 @@ const URL = 'https://api.nasa.gov/planetary/apod';
  * @returns {Promise} sem mun innihalda upplýsingar um mynd/myndband hjá nasa.
  */
 export default async function getRandomImage() {
-    const date = RandomDate();
+    const date = generateRandomDate();
     const requestURL = `${URL}?api_key=${API_KEY}&date=${date}`;
     const res = await fetch(requestURL);
 

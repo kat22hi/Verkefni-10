@@ -28,7 +28,6 @@ export function el(name, ...children) {
       }
     });
   }
-
   return element;
 }
 
